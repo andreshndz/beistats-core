@@ -1,0 +1,3 @@
+fastapi==0.100.0
+mongoengine==0.26.0
+
