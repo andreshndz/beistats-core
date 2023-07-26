@@ -1,5 +1,5 @@
 from .games import Game
+from .user_statistics import UserStatistic
 from .users import User
-from .user_statistics import User
 
 __all__ = ['Game', 'User', 'UserStatistic']

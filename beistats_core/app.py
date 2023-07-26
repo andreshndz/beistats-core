@@ -1,5 +1,3 @@
-from typing import Union
-
 from fastapi import FastAPI
 
 app = FastAPI(title='beistats_core')
@@ -9,4 +7,5 @@ app = FastAPI(title='beistats_core')
 def health_check():
     return {'beistats_core': 'I am healthy'}
 
-from .views import *
+
+from beistats_core import views  # isort:skip # NOQA

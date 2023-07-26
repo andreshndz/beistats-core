@@ -1,2 +1,2 @@
-from .games import *
-from .users import *
+from .games import *  # isort:skip # NOQA
+from .users import *  # isort:skip # NOQA

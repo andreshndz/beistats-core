@@ -1,16 +1,15 @@
+import datetime as dt
+
 from mongoengine import (
     DateTimeField,
-    DoesNotExist,
-    EmbeddedDocumentField,
     IntField,
     LazyReferenceField,
-    ListField,
     StringField,
-    URLField,
 )
 from mongoengine_plus.aio import AsyncDocument
 from mongoengine_plus.models import BaseModel, uuid_field
-from mongoengine_plus.models.event_handlers import updated_at
+
+from .users import User
 
 
 class Game(AsyncDocument, BaseModel):
