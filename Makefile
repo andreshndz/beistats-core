@@ -38,6 +38,12 @@ lint:
 	$(black) --check
 	$(mypy)
 
+.PHONY: docker-run
+docker-run:
+	docker build -t $(PROJECT) .
+	docker run -dp 127.0.0.1:80:80 $(PROJECT)
+
+
 .PHONY: clean
 clean:
 	rm -rf `find . -name __pycache__`

@@ -1,0 +1,16 @@
+# git
+.git/
+.github/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# .env
+.env
+env.template
+
+tests/
+infrastructure/
+requirements-test.txt
