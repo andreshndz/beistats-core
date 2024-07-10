@@ -10,7 +10,8 @@ from mongoengine_plus.aio import AsyncDocument
 from mongoengine_plus.models import BaseModel, uuid_field
 from mongoengine_plus.models.event_handlers import updated_at
 
-from . import Team, User
+from .teams import Team
+from .users import User
 
 
 @updated_at.apply

@@ -1,6 +1,6 @@
 import datetime as dt
 
-from mongoengine import DateTimeField, LazyReferenceField, StringField
+from mongoengine import DateTimeField, StringField
 from mongoengine_plus.aio import AsyncDocument
 from mongoengine_plus.models import BaseModel, uuid_field
 from mongoengine_plus.models.event_handlers import updated_at
@@ -24,7 +24,7 @@ class Team(AsyncDocument, BaseModel):
 
     @classmethod
     async def create(cls, team_request: TeamRequest):
-        new_team = cls(**team_request)
+        new_team = cls(**team_request.dict())
         await new_team.async_save()
         return new_team
 
@@ -32,7 +32,7 @@ class Team(AsyncDocument, BaseModel):
         self.name = team_request.name
         self.updated_at = dt.datetime.utcnow()
         await self.async_save()
-    
+
     async def deactivate(self):
         self.deactivated_at = dt.datetime.utcnow()
         await self.async_save()

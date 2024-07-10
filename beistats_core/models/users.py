@@ -6,8 +6,8 @@ from mongoengine_plus.models import BaseModel, uuid_field
 from mongoengine_plus.models.event_handlers import updated_at
 from mongoengine_plus.types import EnumField
 
-from ..types import UserType
 from ..requests import UserCreateRequest, UserUpdateRequest
+from ..types import UserType
 
 
 @updated_at.apply
@@ -30,16 +30,24 @@ class User(AsyncDocument, BaseModel):
 
     @classmethod
     async def create(cls, user_request: UserCreateRequest):
-        new_user = cls(**user_request)
+        new_user = cls(**user_request.dict())
         await new_user.async_save()
         return new_user
 
     async def update(self, user_request: UserUpdateRequest):
-        self.first_name = user_request.first_name if user_request.first_name else self.first_name
-        self.last_name = user_request.last_name if user_request.last_name else self.last_name
+        self.first_name = (
+            user_request.first_name
+            if user_request.first_name
+            else self.first_name
+        )
+        self.last_name = (
+            user_request.last_name
+            if user_request.last_name
+            else self.last_name
+        )
         self.updated_at = dt.datetime.utcnow()
         await self.async_save()
-    
+
     async def deactivate(self):
         self.deactivated_at = dt.datetime.utcnow()
         await self.async_save()

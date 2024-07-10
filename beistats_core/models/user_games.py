@@ -9,9 +9,9 @@ from mongoengine import (
 from mongoengine_plus.aio import AsyncDocument
 from mongoengine_plus.models import BaseModel, uuid_field
 
+from ..requests import UserGameRequest
 from .teams import Team
 from .users import User
-from ..requests import GameRequest
 
 
 class UserGame(AsyncDocument, BaseModel):
@@ -32,8 +32,10 @@ class UserGame(AsyncDocument, BaseModel):
     created_at = DateTimeField(default=dt.datetime.utcnow)
 
     @classmethod
-    async def create(cls, user: User, team: Team, game_request: GameRequest):
-        new_game = cls(user=user, team=team, **game_request)
+    async def create(
+        cls, user: User, team: Team, user_game_request: UserGameRequest
+    ):
+        new_game = cls(user=user, team=team, **user_game_request.dict())
         await new_game.async_save()
 
         # Calculate whole statistics

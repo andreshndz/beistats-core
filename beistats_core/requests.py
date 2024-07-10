@@ -17,7 +17,7 @@ class UserUpdateRequest(BaseModel):
     first_name: Optional[str] = None
     last_name: Optional[str] = None
 
-     # you can select multiple fields, or use '*' to select all fields
+    # you can select multiple fields, or use '*' to select all fields
     @field_validator('first_name', 'last_name')
     @classmethod
     def check_alphanumeric(cls, v: str, info: ValidationInfo) -> str:
@@ -27,10 +27,17 @@ class UserUpdateRequest(BaseModel):
     """
     @validator("title", "body", pre=True, always=True)
     def check_at_least_one_not_none(cls, v1, v2):
-        assert (isinstance(values.get('title'), str) and values.get('title') is not None) or (isinstance(values.get('body'), str) and values.get('body') is not None), "At least one of 'title' or 'body' must have a non-None value"
+        assert (
+                isinstance(values.get('title'), str)
+                and values.get('title') is not None
+            ) or (
+                isinstance(values.get('body'), str)
+                and values.get('body') is not None
+            ),
+            "At least one of 'title' or 'body' must have a non-None value"
         return v1, v2
     """
-    
+
 
 class TeamRequest(BaseModel):
     name: str
