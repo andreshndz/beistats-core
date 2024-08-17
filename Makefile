@@ -24,7 +24,7 @@ install-test: install
 
 .PHONY: test
 test: clean install-test lint
-	pytest
+	pytest --cov-report term-missing --cov=$(PROJECT) tests/ -p no:warnings
 
 .PHONY: format
 format:
