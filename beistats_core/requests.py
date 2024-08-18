@@ -1,6 +1,6 @@
 from typing import Optional
 
-from pydantic import BaseModel, ValidationInfo, field_validator
+from pydantic import BaseModel, NonNegativeInt, ValidationInfo, field_validator
 
 from .types import UserType
 
@@ -46,8 +46,8 @@ class TeamRequest(BaseModel):
 class UserGameRequest(BaseModel):
     user_id: str
     team_id: str
-    at_bat: int
-    h: int
-    k: int
-    bb: int
-    sb: int
+    at_bat: NonNegativeInt
+    h: NonNegativeInt
+    k: NonNegativeInt
+    bb: NonNegativeInt
+    sb: NonNegativeInt

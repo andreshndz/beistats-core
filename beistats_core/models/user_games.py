@@ -35,7 +35,11 @@ class UserGame(AsyncDocument, BaseModel):
     async def create(
         cls, user: User, team: Team, user_game_request: UserGameRequest
     ):
-        new_game = cls(user=user, team=team, **user_game_request.dict())
+        new_game = cls(
+            user=user,
+            team=team,
+            **user_game_request.dict(exclude={'user_id', 'team_id'}),
+        )
         await new_game.async_save()
 
         # Calculate whole statistics

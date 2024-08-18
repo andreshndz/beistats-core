@@ -26,6 +26,10 @@ install-test: install
 test: clean install-test lint
 	pytest --cov-report term-missing --cov=$(PROJECT) tests/ -p no:warnings
 
+.PHONY: pytest
+pytest:
+	pytest --cov-report term-missing --cov=$(PROJECT) tests/ -p no:warnings
+
 .PHONY: format
 format:
 	$(isort)
@@ -57,5 +61,6 @@ clean:
 	rm -rf *.egg-info
 	rm -f .coverage
 	rm -f .coverage.*
+	rm -f .coverage*
 	rm -rf build
 	rm -rf dist

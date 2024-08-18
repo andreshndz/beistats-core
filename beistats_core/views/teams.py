@@ -10,7 +10,7 @@ def get_users():
     return {'teams': []}
 
 
-@app.post('/teams')
+@app.post('/teams', response_model=Team)
 async def create_team(team_request: TeamRequest):
     team = await Team.create(team_request)
     return team
