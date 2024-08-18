@@ -14,4 +14,4 @@ def health_check():
     return {'beistats_core': 'I am healthy'}
 
 
-from beistats_core import views  # isort:skip # NOQA
+from beistats_core.views import teams, user_games, users  # isort:skip # NOQA

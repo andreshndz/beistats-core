@@ -10,10 +10,10 @@ def get_users():
     return {'teams': []}
 
 
-@app.post('/teams', response_model=Team)
+@app.post('/teams')
 async def create_team(team_request: TeamRequest):
     team = await Team.create(team_request)
-    return team
+    return team.to_dict()
 
 
 @app.patch('/teams/{team_id}')
@@ -24,7 +24,7 @@ async def update_team(team_id: str, team_request: TeamRequest):
         raise HTTPException(status_code=404, detail="Team not found")
     else:
         await team.update(team_request)
-        return team
+        return team.to_dict()
 
 
 @app.delete('/teams/{team_id}')
@@ -35,4 +35,4 @@ async def deactivate_team(team_id: str):
         raise HTTPException(status_code=404, detail="Team not found")
     else:
         await team.deactivate()
-        return team
+        return team.to_dict()
