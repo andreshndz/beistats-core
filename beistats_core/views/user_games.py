@@ -25,4 +25,4 @@ async def create_user_game(user_game_request: UserGameRequest):
         raise HTTPException(status_code=400, detail="Team not found")
 
     user_game = await UserGame.create(user, team, user_game_request)
-    return user_game
+    return user_game.to_dict()

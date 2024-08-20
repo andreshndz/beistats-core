@@ -44,3 +44,16 @@ class UserGame(AsyncDocument, BaseModel):
 
         # Calculate whole statistics
         return new_game
+
+    def to_dict(self):
+        return dict(
+            id=self.id,
+            user_id=self.user.id,
+            team_id=self.team.id,
+            at_bat=self.at_bat,
+            h=self.h,
+            k=self.k,
+            bb=self.bb,
+            sb=self.sb,
+            created_at=self.created_at.isoformat(),
+        )
