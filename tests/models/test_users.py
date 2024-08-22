@@ -15,6 +15,7 @@ async def test_create_user(create_user_request: UserCreateRequest):
     assert user.created_at
     assert user.updated_at
     assert not user.deactivated_at
+    await user.async_delete()
 
 
 @pytest.mark.asyncio

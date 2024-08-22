@@ -22,3 +22,4 @@ async def test_create_user_game(user: User, team: Team):
     assert user_game.user.id == user.id
     assert user_game.team.id == team.id
     assert user_game.created_at
+    await user_game.async_delete()

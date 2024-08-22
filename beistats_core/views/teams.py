@@ -1,13 +1,15 @@
-from fastapi import HTTPException
+from fastapi import Depends, HTTPException
 
 from ..app import app
 from ..models.teams import Team
+from ..queries import BaseQueryParams
 from ..requests import TeamRequest
 
 
 @app.get('/teams')
-def get_users():
-    return {'teams': []}
+def get_teams(params: BaseQueryParams = Depends()):
+    query = Team.objects.skip(params.offset).limit(params.size)
+    return {'teams': [team.to_dict() for team in query.all()]}
 
 
 @app.post('/teams')

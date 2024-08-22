@@ -1,15 +1,21 @@
-from fastapi import HTTPException
+from fastapi import Depends, HTTPException
 
 from ..app import app
 from ..models.teams import Team
 from ..models.user_games import UserGame
 from ..models.users import User
+from ..queries import UserGamesQueryParams
 from ..requests import UserGameRequest
 
 
 @app.get('/user-games')
-def get_user_games():
-    return {'games': []}
+def get_user_games(params: UserGamesQueryParams = Depends()):
+    query = UserGame.objects.skip(params.offset).limit(params.size)
+    if params.team_id:
+        query = query.filter(team=params.team_id)
+    if params.user_id:
+        query = query.filter(user=params.user_id)
+    return {'user_games': [user_game.to_dict() for user_game in query.all()]}
 
 
 @app.post('/user-games')

@@ -14,7 +14,7 @@ class Team(AsyncDocument, BaseModel):
     Team basic data in a collection
     """
 
-    meta = {'collection': 'teams'}
+    meta = {'collection': 'teams', 'ordering': ['-created_at']}
 
     id = StringField(primary_key=True, default=uuid_field('TE'))
     name = StringField(required=True)

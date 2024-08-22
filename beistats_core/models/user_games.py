@@ -19,7 +19,7 @@ class UserGame(AsyncDocument, BaseModel):
     Stores stats about a user in a single game
     """
 
-    meta = {'collection': 'user_games'}
+    meta = {'collection': 'user_games', 'ordering': ['-created_at']}
 
     id = StringField(primary_key=True, default=uuid_field('UG'))
     user = LazyReferenceField(User, required=True)

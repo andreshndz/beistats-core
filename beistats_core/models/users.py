@@ -16,7 +16,7 @@ class User(AsyncDocument, BaseModel):
     User basic data in a collection
     """
 
-    meta = {'collection': 'users'}
+    meta = {'collection': 'users', 'ordering': ['-created_at']}
 
     id = StringField(primary_key=True, default=uuid_field('US'))
     first_name = StringField(required=True)

@@ -2,10 +2,12 @@ from beistats_core.models.teams import Team
 from beistats_core.requests import TeamRequest
 
 
-def test_get_teams(client):
+def test_get_teams(client, team: Team):
     response = client.get('/teams')
     assert response.status_code == 200
-    assert response.json() == {'teams': []}
+    teams = response.json()['teams']
+    assert len(teams) == 1
+    assert teams[0]['id'] == team.id
 
 
 def test_create_team(client):

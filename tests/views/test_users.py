@@ -2,10 +2,12 @@ from beistats_core.models.users import User
 from beistats_core.requests import UserCreateRequest, UserUpdateRequest
 
 
-def test_get_users(client):
+def test_get_users(client, user: User):
     response = client.get('/users')
     assert response.status_code == 200
-    assert response.json() == {'users': []}
+    users = response.json()['users']
+    assert len(users) == 1
+    assert users[0]['id'] == user.id
 
 
 def test_create_user(client, create_user_request: UserCreateRequest):

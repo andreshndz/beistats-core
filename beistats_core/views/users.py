@@ -1,13 +1,15 @@
-from fastapi import HTTPException
+from fastapi import Depends, HTTPException
 
 from ..app import app
 from ..models.users import User
+from ..queries import BaseQueryParams
 from ..requests import UserCreateRequest, UserUpdateRequest
 
 
 @app.get('/users')
-def get_users():
-    return {'users': []}
+def get_users(params: BaseQueryParams = Depends()):
+    query = User.objects.skip(params.offset).limit(params.size)
+    return {'users': [user.to_dict() for user in query.all()]}
 
 
 @app.post('/users')

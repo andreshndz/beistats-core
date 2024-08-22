@@ -11,6 +11,7 @@ async def test_create_team(team_request: TeamRequest):
     assert team.created_at
     assert team.updated_at
     assert not team.deactivated_at
+    await team.async_delete()
 
 
 @pytest.mark.asyncio

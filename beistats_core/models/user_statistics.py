@@ -20,7 +20,7 @@ class UserStatistic(AsyncDocument, BaseModel):
     Global User stats
     """
 
-    meta = {'collection': 'user_statistics'}
+    meta = {'collection': 'user_statistics', 'ordering': ['-created_at']}
 
     id = StringField(primary_key=True, default=uuid_field('ST'))
     user = LazyReferenceField(User, required=True)
