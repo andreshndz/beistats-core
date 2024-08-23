@@ -17,9 +17,9 @@ async def test_create_user_game(user: User, team: Team):
         bb=1,
         sb=0,
     )
-    user_game = await UserGame.create(user, team, user_game_request)
+    user_game = await UserGame.create(user_game_request)
     assert user_game.id
-    assert user_game.user.id == user.id
-    assert user_game.team.id == team.id
+    assert user_game.user_id == user.id
+    assert user_game.team_id == team.id
     assert user_game.created_at
     await user_game.async_delete()

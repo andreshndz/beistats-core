@@ -58,6 +58,6 @@ async def user_game(user: User, team: Team):
         bb=1,
         sb=0,
     )
-    user_game = await UserGame.create(user, team, user_game_request)
+    user_game = await UserGame.create(user_game_request)
     yield user_game
     await user_game.async_delete()

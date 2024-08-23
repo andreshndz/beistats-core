@@ -10,7 +10,7 @@ def test_get_user_games(client, user_game: UserGame):
     assert len(response.json()['user_games']) == 1
 
     # Sending user_id
-    response = client.get(f'/user-games?user_id={user_game.user.id}')
+    response = client.get(f'/user-games?user_id={user_game.user_id}')
     assert response.status_code == 200
     assert len(response.json()['user_games']) == 1
 
@@ -20,7 +20,7 @@ def test_get_user_games(client, user_game: UserGame):
     assert len(response.json()['user_games']) == 0
 
     # Sending team_id
-    response = client.get(f'/user-games?team_id={user_game.team.id}')
+    response = client.get(f'/user-games?team_id={user_game.team_id}')
     assert response.status_code == 200
     assert len(response.json()['user_games']) == 1
 
