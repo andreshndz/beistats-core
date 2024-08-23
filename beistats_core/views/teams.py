@@ -5,6 +5,8 @@ from ..models.teams import Team
 from ..queries import BaseQueryParams
 from ..requests import TeamRequest
 
+# from .utils import get_authenticated_user
+
 
 @app.get('/teams')
 def get_teams(params: BaseQueryParams = Depends()):
@@ -38,3 +40,12 @@ async def deactivate_team(team_id: str):
     else:
         await team.deactivate()
         return team.to_dict()
+
+
+# @app.get('/user-teams')
+# def get_user_teams(
+#     params: BaseQueryParams = Depends(),
+#     user_id: str = Depends(get_authenticated_user)
+# ):
+#     query = Team.objects.skip(params.offset).limit(params.size)
+#     return {'teams': [team.to_dict() for team in query.all()]}

@@ -3,3 +3,4 @@ fastapi==0.100.0
 mongoengine==0.26.0
 mongoengine-plus==0.2.2
 httpx==0.24.1
+PyJWT==2.9.0

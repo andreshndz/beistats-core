@@ -5,6 +5,11 @@ from pydantic import BaseModel, NonNegativeInt, ValidationInfo, field_validator
 from .types import UserType
 
 
+class LoginRequest(BaseModel):
+    email_address: str
+    password: str
+
+
 class UserCreateRequest(BaseModel):
     first_name: str
     last_name: str
