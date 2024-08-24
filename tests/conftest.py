@@ -27,6 +27,14 @@ def client():
 
 
 @pytest.fixture
+def bad_credentials():
+    expire = datetime.utcnow() + timedelta(minutes=MAX_SESSION_MINUTES)
+    to_encode = {'sub': 'not_valid_user', 'exp': expire}
+    encoded_jwt = jwt.encode(to_encode, JWT_SECRET_KEY, algorithm=ALGORITHM)
+    return {'Authorization': f'Bearer {encoded_jwt}'}
+
+
+@pytest.fixture
 def create_user_request():
     return UserCreateRequest(
         first_name='Pedro',

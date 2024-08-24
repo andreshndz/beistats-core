@@ -35,7 +35,7 @@ async def create_user_game(
         raise HTTPException(status_code=400, detail="User not found")
 
     try:
-        Team.objects.get(id=user_game_request.team_id)
+        Team.objects.get(id=user_game_request.team_id, user_id=user_id)
     except Team.DoesNotExist:
         raise HTTPException(status_code=400, detail="Team not found")
 

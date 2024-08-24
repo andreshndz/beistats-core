@@ -22,6 +22,29 @@ def test_get_user_games(client, user_game_info: dict):
     assert len(response.json()['user_games']) == 0
 
 
+def test_create_user_game_invalid_user_authenticated(
+    client, team_info: dict, bad_credentials: dict
+):
+    # Create invalid headers
+    headers = bad_credentials
+
+    # Run test with invalid headers
+    user_game_request = UserGameRequest(
+        team_id='invalid',
+        at_bat=3,
+        h=1,
+        k=1,
+        bb=1,
+        sb=0,
+    )
+    response = client.post(
+        '/user-games', json=user_game_request.dict(), headers=headers
+    )
+    assert response.status_code == 400
+    json = response.json()
+    assert json['detail'] == 'User not found'
+
+
 def test_create_user_game_invalid_team(client, team_info: dict):
     headers = team_info['headers']
     user_game_request = UserGameRequest(
