@@ -6,8 +6,9 @@ from beistats_core.requests import TeamRequest
 
 @pytest.mark.asyncio
 async def test_create_team(team_request: TeamRequest):
-    team = await Team.create(team_request)
+    team = await Team.create(team_request, 'US1')
     assert team.name == team_request.name
+    assert team.user_id == 'US1'
     assert team.created_at
     assert team.updated_at
     assert not team.deactivated_at
@@ -15,7 +16,8 @@ async def test_create_team(team_request: TeamRequest):
 
 
 @pytest.mark.asyncio
-async def test_update_team(team: Team):
+async def test_update_team(team_info: dict):
+    team = team_info['team']
     last_update = team.updated_at
     update_request = TeamRequest(name='Leones')
     await team.update(update_request)
@@ -25,7 +27,8 @@ async def test_update_team(team: Team):
 
 
 @pytest.mark.asyncio
-async def test_deactivate_team(team: Team):
+async def test_deactivate_team(team_info: dict):
+    team = team_info['team']
     assert not team.deactivated_at
     await team.deactivate()
     assert team.deactivated_at

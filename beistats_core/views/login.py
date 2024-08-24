@@ -12,7 +12,9 @@ from ..requests import LoginRequest
 async def login(login_request: LoginRequest):
     # Won't take in care about password now. Just email
     try:
-        user = User.objects.get(email_address=login_request.email_address)
+        user = await User.objects.async_get(
+            email_address=login_request.email_address
+        )
     except (User.DoesNotExist, User.MultipleObjectsReturned):
         raise HTTPException(status_code=400, detail='Invalid Data')
 

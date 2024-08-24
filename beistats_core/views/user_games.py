@@ -6,22 +6,31 @@ from ..models.user_games import UserGame
 from ..models.users import User
 from ..queries import UserGamesQueryParams
 from ..requests import UserGameRequest
+from .utils import get_authenticated_user
 
 
 @app.get('/user-games')
-def get_user_games(params: UserGamesQueryParams = Depends()):
-    query = UserGame.objects.skip(params.offset).limit(params.size)
+def get_user_games(
+    params: UserGamesQueryParams = Depends(),
+    user_id: str = Depends(get_authenticated_user),
+):
+    query = (
+        UserGame.objects(user_id=user_id)
+        .skip(params.offset)
+        .limit(params.size)
+    )
     if params.team_id:
         query = query.filter(team_id=params.team_id)
-    if params.user_id:
-        query = query.filter(user_id=params.user_id)
     return {'user_games': [user_game.to_dict() for user_game in query.all()]}
 
 
 @app.post('/user-games')
-async def create_user_game(user_game_request: UserGameRequest):
+async def create_user_game(
+    user_game_request: UserGameRequest,
+    user_id: str = Depends(get_authenticated_user),
+):
     try:
-        User.objects.get(id=user_game_request.user_id)
+        User.objects.get(id=user_id)
     except User.DoesNotExist:
         raise HTTPException(status_code=400, detail="User not found")
 
@@ -30,5 +39,5 @@ async def create_user_game(user_game_request: UserGameRequest):
     except Team.DoesNotExist:
         raise HTTPException(status_code=400, detail="Team not found")
 
-    user_game = await UserGame.create(user_game_request)
+    user_game = await UserGame.create(user_id, user_game_request)
     return user_game.to_dict()

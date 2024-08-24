@@ -49,7 +49,6 @@ class TeamRequest(BaseModel):
 
 
 class UserGameRequest(BaseModel):
-    user_id: str
     team_id: str
     at_bat: NonNegativeInt
     h: NonNegativeInt

@@ -13,5 +13,4 @@ class BaseQueryParams(BaseModel):
 
 
 class UserGamesQueryParams(BaseQueryParams):
-    user_id: Optional[str] = None
     team_id: Optional[str] = None

@@ -25,8 +25,8 @@ class UserGame(AsyncDocument, BaseModel):
     created_at = DateTimeField(default=dt.datetime.utcnow)
 
     @classmethod
-    async def create(cls, user_game_request: UserGameRequest):
-        new_game = cls(**user_game_request.dict())
+    async def create(cls, user_id: str, user_game_request: UserGameRequest):
+        new_game = cls(user_id=user_id, **user_game_request.dict())
         await new_game.async_save()
 
         # Calculate whole statistics
