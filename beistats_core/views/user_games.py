@@ -1,9 +1,7 @@
 from fastapi import Depends, HTTPException
 
 from ..app import app
-from ..models.teams import Team
-from ..models.user_games import UserGame
-from ..models.users import User
+from ..models import Team, User, UserGame
 from ..queries import UserGamesQueryParams
 from ..requests import UserGameRequest
 from .utils import get_authenticated_user
@@ -30,12 +28,14 @@ async def create_user_game(
     user_id: str = Depends(get_authenticated_user),
 ):
     try:
-        User.objects.get(id=user_id)
+        await User.objects.async_get(id=user_id)
     except User.DoesNotExist:
         raise HTTPException(status_code=400, detail="User not found")
 
     try:
-        Team.objects.get(id=user_game_request.team_id, user_id=user_id)
+        await Team.objects.async_get(
+            id=user_game_request.team_id, user_id=user_id
+        )
     except Team.DoesNotExist:
         raise HTTPException(status_code=400, detail="Team not found")
 

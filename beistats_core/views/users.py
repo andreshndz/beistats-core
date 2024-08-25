@@ -1,7 +1,7 @@
 from fastapi import Depends, HTTPException
 
 from ..app import app
-from ..models.users import User
+from ..models import User
 from ..queries import BaseQueryParams
 from ..requests import UserCreateRequest, UserUpdateRequest
 
@@ -21,7 +21,7 @@ async def create_users(user_request: UserCreateRequest):
 @app.patch('/users/{user_id}')
 async def update_user(user_id: str, user_request: UserUpdateRequest):
     try:
-        user = User.objects.get(id=user_id)
+        user = await User.objects.async_get(id=user_id)
     except User.DoesNotExist:
         raise HTTPException(status_code=404, detail="User not found")
     else:
@@ -32,7 +32,7 @@ async def update_user(user_id: str, user_request: UserUpdateRequest):
 @app.delete('/users/{user_id}')
 async def deactivate_user(user_id: str):
     try:
-        user = User.objects.get(id=user_id)
+        user = await User.objects.async_get(id=user_id)
     except User.DoesNotExist:
         raise HTTPException(status_code=404, detail="User not found")
     else:

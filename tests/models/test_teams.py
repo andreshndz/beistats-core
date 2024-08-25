@@ -1,6 +1,6 @@
 import pytest
 
-from beistats_core.models.teams import Team
+from beistats_core.models import Team, UserTeamStatistic
 from beistats_core.requests import TeamRequest
 
 
@@ -13,6 +13,9 @@ async def test_create_team(team_request: TeamRequest):
     assert team.updated_at
     assert not team.deactivated_at
     await team.async_delete()
+    assert await UserTeamStatistic.objects.async_get(
+        user_id='US1', team_id=team.id
+    )
 
 
 @pytest.mark.asyncio

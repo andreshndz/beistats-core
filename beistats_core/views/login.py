@@ -4,7 +4,7 @@ import jwt
 from fastapi import HTTPException
 
 from ..app import ALGORITHM, JWT_SECRET_KEY, MAX_SESSION_MINUTES, app
-from ..models.users import User
+from ..models import User
 from ..requests import LoginRequest
 
 

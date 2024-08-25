@@ -1,7 +1,7 @@
 from fastapi import Depends, HTTPException
 
 from ..app import app
-from ..models.teams import Team
+from ..models import Team
 from ..queries import BaseQueryParams
 from ..requests import TeamRequest
 from .utils import get_authenticated_user
@@ -33,7 +33,7 @@ async def update_team(
     user_id: str = Depends(get_authenticated_user),
 ):
     try:
-        team = Team.objects.get(id=team_id, user_id=user_id)
+        team = await Team.objects.async_get(id=team_id, user_id=user_id)
     except Team.DoesNotExist:
         raise HTTPException(status_code=404, detail='Team not found')
     else:
@@ -46,7 +46,7 @@ async def deactivate_team(
     team_id: str, user_id: str = Depends(get_authenticated_user)
 ):
     try:
-        team = Team.objects.get(id=team_id, user_id=user_id)
+        team = await Team.objects.async_get(id=team_id, user_id=user_id)
     except Team.DoesNotExist:
         raise HTTPException(status_code=404, detail="Team not found")
     else:
