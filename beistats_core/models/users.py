@@ -8,6 +8,7 @@ from mongoengine_plus.types import EnumField
 
 from ..requests import UserCreateRequest, UserUpdateRequest
 from ..types import UserType
+from .user_team_statistics import UserTeamStatistic
 
 
 @updated_at.apply
@@ -27,6 +28,10 @@ class User(AsyncDocument, BaseModel):
     updated_at = DateTimeField()
     deactivated_at = DateTimeField()
     type = EnumField(UserType, required=True)
+
+    @property
+    def is_active(self):
+        return self.deactivated_at is None
 
     @classmethod
     async def create(cls, user_request: UserCreateRequest):
@@ -51,3 +56,10 @@ class User(AsyncDocument, BaseModel):
     async def deactivate(self):
         self.deactivated_at = dt.datetime.utcnow()
         await self.async_save()
+
+    async def me_dict(self):
+        response = self.to_dict()
+        response['statistics'] = [
+            uts.to_dict() for uts in UserTeamStatistic.objects(user_id=self.id)
+        ]
+        return response

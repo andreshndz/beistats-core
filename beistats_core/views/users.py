@@ -2,14 +2,16 @@ from fastapi import Depends, HTTPException
 
 from ..app import app
 from ..models import User
-from ..queries import BaseQueryParams
 from ..requests import UserCreateRequest, UserUpdateRequest
+from .utils import get_authenticated_user
 
 
-@app.get('/users')
-def get_users(params: BaseQueryParams = Depends()):
-    query = User.objects.skip(params.offset).limit(params.size)
-    return {'users': [user.to_dict() for user in query.all()]}
+@app.get('/users/me')
+async def get_user(
+    user_id: str = Depends(get_authenticated_user),
+):
+    user = await User.objects.async_get(id=user_id)
+    return {'user': await user.me_dict()}
 
 
 @app.post('/users')

@@ -15,7 +15,8 @@ async def login(login_request: LoginRequest):
         user = await User.objects.async_get(
             email_address=login_request.email_address
         )
-    except (User.DoesNotExist, User.MultipleObjectsReturned):
+        assert user.is_active
+    except (AssertionError, User.DoesNotExist, User.MultipleObjectsReturned):
         raise HTTPException(status_code=400, detail='Invalid Data')
 
     # Create Access Token
