@@ -11,7 +11,7 @@ async def get_user(
     user_id: str = Depends(get_authenticated_user),
 ):
     user = await User.objects.async_get(id=user_id)
-    return {'user': await user.me_dict()}
+    return dict(user=await user.me_dict())
 
 
 @app.post('/users')
@@ -20,8 +20,14 @@ async def create_users(user_request: UserCreateRequest):
     return user.to_dict()
 
 
-@app.patch('/users/{user_id}')
-async def update_user(user_id: str, user_request: UserUpdateRequest):
+@app.patch('/users/{url_user_id}')
+async def update_user(
+    url_user_id: str,
+    user_request: UserUpdateRequest,
+    user_id: str = Depends(get_authenticated_user),
+):
+    if url_user_id != 'me' and url_user_id != user_id:
+        raise HTTPException(status_code=403, detail="Can't make this action")
     try:
         user = await User.objects.async_get(id=user_id)
     except User.DoesNotExist:
@@ -31,8 +37,12 @@ async def update_user(user_id: str, user_request: UserUpdateRequest):
         return user.to_dict()
 
 
-@app.delete('/users/{user_id}')
-async def deactivate_user(user_id: str):
+@app.delete('/users/{url_user_id}')
+async def deactivate_user(
+    url_user_id: str, user_id: str = Depends(get_authenticated_user)
+):
+    if url_user_id != 'me' and url_user_id != user_id:
+        raise HTTPException(status_code=403, detail="Can't make this action")
     try:
         user = await User.objects.async_get(id=user_id)
     except User.DoesNotExist:
