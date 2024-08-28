@@ -1,0 +1,23 @@
+services:
+  beistats_core:
+    build: .
+    ports:
+      - "8080:8080"
+    environment:
+      - DATABASE_URI=mongodb://mongo:27017/beistats_core
+    volumes:
+      - .:/beistats_core
+  
+  mongo:
+    container_name: mongo
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    command: 
+      - '--logpath'
+      - '/var/log/mongodb/mongod.log'
+
+volumes:
+  mongo_data:

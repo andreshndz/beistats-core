@@ -44,9 +44,7 @@ lint:
 
 .PHONY: docker-run
 docker-run:
-	docker build -t $(PROJECT) .
-	docker run -dp 127.0.0.1:80:80 $(PROJECT)
-
+	docker compose up --build
 
 .PHONY: clean
 clean:

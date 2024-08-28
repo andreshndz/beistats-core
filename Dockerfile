@@ -8,8 +8,8 @@ RUN pip install --quiet --upgrade pip
 RUN make install
 RUN pip install --quiet uvicorn
 
-EXPOSE 80
+EXPOSE 8080
 
 COPY . /beistats_core
 
-CMD uvicorn beistats_core.app:app --host 0.0.0.0 --workers=5  --port 80
+CMD uvicorn beistats_core.app:app --host 0.0.0.0 --workers=5  --port 8080

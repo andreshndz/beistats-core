@@ -5,6 +5,7 @@ from mongoengine_plus.aio import AsyncDocument
 from mongoengine_plus.models import BaseModel, uuid_field
 
 from ..requests import UserGameRequest
+from .user_team_statistics import UserTeamStatistic
 
 
 class UserGame(AsyncDocument, BaseModel):
@@ -30,4 +31,8 @@ class UserGame(AsyncDocument, BaseModel):
         await new_game.async_save()
 
         # Calculate whole statistics
+        uts = UserTeamStatistic.objects.get(
+            user_id=user_id, team_id=new_game.team_id
+        )
+        await uts.calculate_stats(user_game_request)
         return new_game
