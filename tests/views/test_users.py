@@ -28,6 +28,14 @@ def test_create_user(client, create_user_request: UserCreateRequest):
     assert not json['deactivated_at']
 
 
+def test_create_user_email_already_exist(
+    client, user: User, create_user_request: UserCreateRequest
+):
+    response = client.post('/users', json=create_user_request.dict())
+    assert response.status_code == 400
+    assert response.json()['detail'] == 'Email already exist'
+
+
 def test_update_user_forbidden(client, user_info: dict):
     update_user_request = UserUpdateRequest(
         first_name='Luis', last_name='Badillo'

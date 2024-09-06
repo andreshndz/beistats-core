@@ -16,6 +16,10 @@ async def get_user(
 
 @app.post('/users')
 async def create_users(user_request: UserCreateRequest):
+    if await User.objects(
+        email_address=user_request.email_address
+    ).async_count():
+        raise HTTPException(status_code=400, detail='Email already exist')
     user = await User.create(user_request)
     return user.to_dict()
 
@@ -31,7 +35,7 @@ async def update_user(
     try:
         user = await User.objects.async_get(id=user_id)
     except User.DoesNotExist:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail='User not found')
     else:
         await user.update(user_request)
         return user.to_dict()
@@ -46,7 +50,7 @@ async def deactivate_user(
     try:
         user = await User.objects.async_get(id=user_id)
     except User.DoesNotExist:
-        raise HTTPException(status_code=404, detail="User not found")
+        raise HTTPException(status_code=404, detail='User not found')
     else:
         await user.deactivate()
         return user.to_dict()
